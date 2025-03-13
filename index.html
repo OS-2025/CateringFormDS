@@ -88,9 +88,9 @@
     </div>
 
     <!-- Submit and Print Buttons -->
-    <div class="form-group">
-        <button type="submit">Submit Order</button>
+    <div class="form-group button-group">
         <button type="button" id="print-button">Print Form</button>
+        <button type="submit">Submit Order</button>
     </div>
 </form>
 
@@ -292,6 +292,20 @@
         `);
         printWindow.document.close();
         printWindow.print();
+    });
+
+    // Ограничение выбора чекбоксов в подгруппах
+    document.getElementById('package-items').addEventListener('change', function(event) {
+        if (event.target.type === 'checkbox') {
+            const subgroup = event.target.closest('.subgroup');
+            const limit = parseInt(subgroup.querySelector('.subgroup-limit').textContent.match(/\d+/)[0]);
+            const checkedItems = subgroup.querySelectorAll('input[type="checkbox"]:checked');
+
+            if (checkedItems.length > limit) {
+                event.target.checked = false; // Снимаем выбор, если превышен лимит
+                alert(`You can select a maximum of ${limit} items from this subgroup.`);
+            }
+        }
     });
 </script>
 
