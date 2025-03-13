@@ -50,67 +50,21 @@
         <input type="number" id="quantity" name="quantity" min="10" required>
         <div class="error" id="quantity-error"></div>
     </div>
-    
+
     <!-- Package Selection -->
     <div class="form-group">
-            <label for="package">Select a Package:</label>
-            <select id="package" name="package" required onchange="showItems(this.value)">
-                <option value="">-- Select a Package --</option>
-                <option value="basic">Basic Package ($10 per person)</option>
-                <option value="premium">Premium Package ($20 per person)</option>
-                <option value="luxury">Luxury Package ($30 per person)</option>
-            </select>
-            <div class="error" id="package-error"></div>
-        </div>
-        
-        <!-- Package Items (Hidden by Default) -->
-        <div id="package-items" class="hidden"></div>
-        <label>Basic Package Items:</label>
-        <div>
-            <input type="checkbox" id="basic-item1" name="basic-items" value="Caesar Salad">
-            <label for="basic-item1">Caesar Salad</label>
-        </div>
-        <div>
-            <input type="checkbox" id="basic-item2" name="basic-items" value="Pasta Carbonara">
-            <label for="basic-item2">Pasta Carbonara</label>
-        </div>
-        <div>
-            <input type="checkbox" id="basic-item3" name="basic-items" value="Fruit Plate">
-            <label for="basic-item3">Fruit Plate</label>
-        </div>
+        <label for="package">Select a Package:</label>
+        <select id="package" name="package" required onchange="showItems(this.value)">
+            <option value="">-- Select a Package --</option>
+            <option value="basic">Basic Package ($10 per person)</option>
+            <option value="premium">Premium Package ($20 per person)</option>
+            <option value="luxury">Luxury Package ($30 per person)</option>
+        </select>
+        <div class="error" id="package-error"></div>
     </div>
 
-    <div id="premium-items" class="form-group hidden">
-        <label>Premium Package Items:</label>
-        <div>
-            <input type="checkbox" id="premium-item1" name="premium-items" value="Grilled Salmon">
-            <label for="premium-item1">Grilled Salmon</label>
-        </div>
-        <div>
-            <input type="checkbox" id="premium-item2" name="premium-items" value="Beef Steak">
-            <label for="premium-item2">Beef Steak</label>
-        </div>
-        <div>
-            <input type="checkbox" id="premium-item3" name="premium-items" value="Vegetable Medley">
-            <label for="premium-item3">Vegetable Medley</label>
-        </div>
-    </div>
-
-    <div id="luxury-items" class="form-group hidden">
-        <label>Luxury Package Items:</label>
-        <div>
-            <input type="checkbox" id="luxury-item1" name="luxury-items" value="Lobster Thermidor">
-            <label for="luxury-item1">Lobster Thermidor</label>
-        </div>
-        <div>
-            <input type="checkbox" id="luxury-item2" name="luxury-items" value="Truffle Risotto">
-            <label for="luxury-item2">Truffle Risotto</label>
-        </div>
-        <div>
-            <input type="checkbox" id="luxury-item3" name="luxury-items" value="Chocolate Fondue">
-            <label for="luxury-item3">Chocolate Fondue</label>
-        </div>
-    </div>
+    <!-- Package Items (Hidden by Default) -->
+    <div id="package-items" class="hidden"></div>
 
     <!-- Additional Comments -->
     <div class="form-group">
@@ -123,6 +77,7 @@
 </form>
 
 <!-- Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
     // Данные для пакетов
     const packages = {
