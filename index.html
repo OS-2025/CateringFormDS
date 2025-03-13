@@ -244,6 +244,29 @@
         defaultMinute: 0,
         onReady: function(selectedDates, dateStr, instance) {
             instance.setDate("10:00 AM");
+        },
+        onChange: function(selectedDates, dateStr, instance) {
+            // Проверка минут при изменении времени
+            const minutes = selectedDates[0].getMinutes();
+            if (minutes !== 0 && minutes !== 30) {
+                // Устанавливаем минуты на 00, если выбрано не 00 или 30
+                selectedDates[0].setMinutes(0);
+                instance.setDate(selectedDates[0]);
+            }
+        }
+    });
+
+    // Проверка минут при вводе вручную
+    document.getElementById('event-time').addEventListener('input', function(event) {
+        const timeValue = event.target.value;
+        const timeParts = timeValue.split(':');
+        if (timeParts.length === 2) {
+            const minutes = parseInt(timeParts[1]);
+            if (minutes !== 0 && minutes !== 30) {
+                // Устанавливаем минуты на 00, если введено не 00 или 30
+                timeParts[1] = '00';
+                event.target.value = timeParts.join(':');
+            }
         }
     });
 
