@@ -187,10 +187,10 @@
             document.getElementById('name-error').textContent = '';
         }
 
-        // Validate Phone
+       // Validate Phone
         const phone = document.getElementById('phone');
-        if (!phone.value.match(/^[0-9]{3} [0-9]{7}$/)) {
-            document.getElementById('phone-error').textContent = 'Please enter a valid phone number (e.g., 617 2345698).';
+        if (!phone.value.match(/^[0-9]{10}$/)) {
+            document.getElementById('phone-error').textContent = 'Please enter a valid 10-digit phone number (e.g., 6172345698).';
             isValid = false;
         } else {
             document.getElementById('phone-error').textContent = '';
