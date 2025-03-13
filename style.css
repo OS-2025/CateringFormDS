@@ -40,3 +40,29 @@ input[type="text"], input[type="tel"], input[type="number"], input[type="date"],
 #comments {
     width: 100%; /* Ширина поля комментариев */
 }
+/* Стили для подгрупп и номенклатур */
+#package-items {
+    margin-top: 20px;
+}
+
+.subgroup {
+    margin-bottom: 20px;
+}
+
+.subgroup h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #333;
+}
+
+.subgroup div {
+    margin-bottom: 5px;
+}
+
+.subgroup input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.hidden {
+    display: none;
+}
