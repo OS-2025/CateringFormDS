@@ -93,6 +93,8 @@ button:hover {
 
 .subgroup div {
     margin-bottom: 5px;
+    display: flex;
+    align-items: center;
 }
 
 .subgroup input[type="checkbox"] {
@@ -122,19 +124,20 @@ h1 {
 }
 
 #phone {
-    width: 150px; /* Ширина поля телефона */
+    width: 200px; /* Ширина поля телефона */
 }
 
 #email {
-    width: 250px; /* Ширина поля email */
+    width: 300px; /* Ширина поля email */
+    height: 40px; /* Высота поля email */
 }
 
 #event-date {
-    width: 180px; /* Ширина поля даты */
+    width: 200px; /* Ширина поля даты */
 }
 
 #event-time {
-    width: 150px; /* Ширина поля времени */
+    width: 200px; /* Ширина поля времени */
 }
 
 #quantity {
@@ -145,6 +148,17 @@ h1 {
     width: 300px; /* Ширина поля выбора пакета */
 }
 
+#package-type {
+    width: 300px; /* Ширина поля типа упаковки */
+}
+
 #comments {
     width: 100%; /* Ширина поля комментариев */
+}
+
+/* Стили для общей стоимости */
+#total-amount {
+    font-size: 18px;
+    font-weight: bold;
+    color: #28a745;
 }
