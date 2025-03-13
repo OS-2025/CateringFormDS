@@ -1,29 +1,5 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-}
-
-form {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    background-color: #f9f9f9;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
+/* Общие стили для полей */
 input[type="text"], input[type="tel"], input[type="number"], input[type="date"], input[type="time"], select, textarea {
-    width: 100%;
     padding: 10px;
     box-sizing: border-box;
     margin-bottom: 15px;
@@ -32,36 +8,35 @@ input[type="text"], input[type="tel"], input[type="number"], input[type="date"],
     font-size: 16px;
 }
 
-button {
-    width: 100%;
-    padding: 12px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
+/* Индивидуальные стили для полей */
+#name {
+    width: 300px; /* Ширина поля имени */
 }
 
-button:hover {
-    background-color: #218838;
+#phone {
+    width: 200px; /* Ширина поля телефона */
 }
 
-input[type="checkbox"] {
-    margin-right: 10px;
+#email {
+    width: 300px; /* Ширина поля email */
 }
 
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
+#event-date {
+    width: 200px; /* Ширина поля даты */
 }
 
-.hidden {
-    display: none;
+#event-time {
+    width: 200px; /* Ширина поля времени */
 }
 
-.error {
-    color: red;
-    font-size: 0.9em;
-    margin-top: 5px;
+#quantity {
+    width: 100px; /* Ширина поля количества */
+}
+
+#package {
+    width: 300px; /* Ширина поля выбора пакета */
+}
+
+#comments {
+    width: 100%; /* Ширина поля комментариев */
 }
