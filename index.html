@@ -14,19 +14,19 @@
 <form id="catering-form" action="/submit-order" method="POST">
     <!-- Contact Information -->
     <div class="form-group">
-        <label for="name">Your Name:</label>
+        <label for="name">Name:</label>
         <input type="text" id="name" name="name" required pattern="[A-Za-z\s]+" title="Please enter a valid name (letters and spaces only)">
         <div class="error" id="name-error"></div>
     </div>
 
     <div class="form-group">
-        <label for="phone">Your Phone:</label>
+        <label for="phone">Phone:</label>
         <input type="tel" id="phone" name="phone" required pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number (e.g., 6172345698)">
         <div class="error" id="phone-error"></div>
     </div>
 
     <div class="form-group">
-        <label for="email">Your Email:</label>
+        <label for="email">Email:</label>
         <input type="email" id="email" name="email" required>
         <div class="error" id="email-error"></div>
     </div>
@@ -51,6 +51,15 @@
         <div class="error" id="quantity-error"></div>
     </div>
 
+    <!-- Package Type -->
+    <div class="form-group">
+        <label for="package-type">Package Type:</label>
+        <select id="package-type" name="package-type" required>
+            <option value="tray">Tray (Free)</option>
+            <option value="individual">Individual (+$0.75/person)</option>
+        </select>
+    </div>
+
     <!-- Package Selection -->
     <div class="form-group">
         <label for="package">Select a Package:</label>
@@ -72,6 +81,12 @@
         <textarea id="comments" name="comments" rows="4"></textarea>
     </div>
 
+    <!-- Total Amount -->
+    <div class="form-group">
+        <label>Total Amount:</label>
+        <div id="total-amount">$0.00</div>
+    </div>
+
     <!-- Submit Button -->
     <button type="submit">Submit Order</button>
 </form>
@@ -83,6 +98,7 @@
     const packages = {
         basic: {
             name: "Basic Package",
+            price: 10,
             subgroups: [
                 {
                     name: "Salads",
@@ -108,6 +124,7 @@
         },
         premium: {
             name: "Premium Package",
+            price: 20,
             subgroups: [
                 {
                     name: "Salads",
@@ -133,6 +150,7 @@
         },
         luxury: {
             name: "Luxury Package",
+            price: 30,
             subgroups: [
                 {
                     name: "Salads",
@@ -189,18 +207,29 @@
         }
     }
 
-    // Ограничение выбора не более 2 позиций из каждой подгруппы
-    document.getElementById('package-items').addEventListener('change', function(event) {
-        if (event.target.type === 'checkbox') {
-            const subgroup = event.target.closest('.subgroup');
-            const checkedItems = subgroup.querySelectorAll('input[type="checkbox"]:checked');
+    // Функция для расчета общей стоимости
+    function calculateTotalAmount() {
+        const quantity = parseInt(document.getElementById('quantity').value) || 0;
+        const package = document.getElementById('package').value;
+        const packageType = document.getElementById('package-type').value;
 
-            if (checkedItems.length > 2) {
-                event.target.checked = false; // Снимаем выбор, если выбрано больше 2
-                alert('You can select a maximum of 2 items from each subgroup.');
-            }
+        let total = 0;
+
+        if (package && packages[package]) {
+            total += quantity * packages[package].price;
         }
-    });
+
+        if (packageType === 'individual') {
+            total += quantity * 0.75;
+        }
+
+        document.getElementById('total-amount').textContent = `$${total.toFixed(2)}`;
+    }
+
+    // Обработчики событий для пересчета стоимости
+    document.getElementById('quantity').addEventListener('input', calculateTotalAmount);
+    document.getElementById('package').addEventListener('change', calculateTotalAmount);
+    document.getElementById('package-type').addEventListener('change', calculateTotalAmount);
 
     // Инициализация Flatpickr для времени
     flatpickr("#event-time", {
@@ -224,19 +253,6 @@
 
         // Валидация других полей (остается без изменений)
         // ...
-
-        // Валидация выбора номенклатуры
-        const package = document.getElementById('package').value;
-        if (package) {
-            const subgroups = document.querySelectorAll('.subgroup');
-            subgroups.forEach(subgroup => {
-                const checkedItems = subgroup.querySelectorAll('input[type="checkbox"]:checked');
-                if (checkedItems.length < 1) {
-                    isValid = false;
-                    alert(`Please select at least 1 item from each subgroup in ${packages[package].name}.`);
-                }
-            });
-        }
 
         if (!isValid) {
             event.preventDefault();
