@@ -17,6 +17,11 @@ const packages = {
                         description: "Tomatoes, cucumbers, red onion, feta cheese, olives, olive oil.",
                         allergens: ["dairy"]
                     },
+                     {
+                        name: "Hummus",
+                        description: "Cheekpeas, cucumbers, olives, olive oil.",
+                        allergens: ["Vegitarian"]
+                    },
                     // Другие блюда
                 ]
             },
