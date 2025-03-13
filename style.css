@@ -162,3 +162,21 @@ h1 {
     font-weight: bold;
     color: #28a745;
 }
+/* Стили для чекбоксов и их подписей */
+.subgroup div {
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center; /* Выравниваем элементы по вертикали */
+}
+
+.subgroup input[type="checkbox"] {
+    margin-right: 10px; /* Отступ между чекбоксом и текстом */
+    width: 16px; /* Фиксированная ширина чекбокса */
+    height: 16px; /* Фиксированная высота чекбокса */
+}
+
+.subgroup label {
+    font-weight: normal;
+    color: #555;
+    margin: 0; /* Убираем отступы у label */
+}
