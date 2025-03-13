@@ -50,7 +50,7 @@ textarea {
 
 /* Стили для кнопки отправки */
 button {
-    width: 50%;
+    width: 100%;
     padding: 12px;
     background-color: #28a745;
     color: white;
@@ -91,19 +91,44 @@ button:hover {
     color: #333;
 }
 
-.subgroup div {
-    margin-bottom: 5px;
-    display: flex;
-    align-items: center;
-}
-
-.subgroup input[type="checkbox"] {
-    margin-right: 10px;
-}
-
-.subgroup label {
-    font-weight: normal;
+.subgroup-limit {
+    margin-bottom: 10px;
+    font-size: 0.9em;
     color: #555;
+}
+
+.item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.item input[type="checkbox"] {
+    margin-right: 10px;
+    margin-top: 5px;
+}
+
+.item label {
+    flex: 1;
+}
+
+.item-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.item-details {
+    margin-left: 0;
+}
+
+.description {
+    font-style: italic;
+    margin-bottom: 5px;
+}
+
+.allergens {
+    color: #d9534f;
+    font-weight: bold;
 }
 
 /* Стили для скрытых элементов */
@@ -114,85 +139,44 @@ button:hover {
 /* Стили для заголовка формы */
 h1 {
     text-align: center;
-    margin-bottom: 24px;
-    color: #28a745;
+    margin-bottom: 20px;
+    color: #333;
 }
 
 /* Стили для ширины полей */
 #name {
-    width: 300px; /* Ширина поля имени */
+    width: 300px;
 }
 
 #phone {
-    width: 200px; /* Ширина поля телефона */
+    width: 200px;
 }
 
 #email {
-    width: 300px; /* Ширина поля email */
-    height: 40px; /* Высота поля email */
+    width: 300px;
+    height: 40px;
 }
 
 #event-date {
-    width: 200px; /* Ширина поля даты */
+    width: 200px;
 }
 
 #event-time {
-    width: 200px; /* Ширина поля времени */
+    width: 200px;
 }
 
 #quantity {
-    width: 100px; /* Ширина поля количества */
+    width: 100px;
 }
 
 #package {
-    width: 300px; /* Ширина поля выбора пакета */
+    width: 300px;
 }
 
 #package-type {
-    width: 300px; /* Ширина поля типа упаковки */
+    width: 300px;
 }
 
 #comments {
-    width: 100%; /* Ширина поля комментариев */
-}
-
-/* Стили для общей стоимости */
-#total-amount {
-    font-size: 18px;
-    font-weight: bold;
-    color: #28a745;
-}
-/* Стили для чекбоксов и их подписей */
-.subgroup div {
-    margin-bottom: 5px;
-    display: flex;
-    align-items: center; /* Выравниваем элементы по вертикали */
-}
-
-.subgroup input[type="checkbox"] {
-    margin-right: 10px; /* Отступ между чекбоксом и текстом */
-    width: 16px; /* Фиксированная ширина чекбокса */
-    height: 16px; /* Фиксированная высота чекбокса */
-}
-
-.subgroup label {
-    font-weight: normal;
-    color: #555;
-    margin: 0; /* Убираем отступы у label */
-}
-/* Стили для деталей номенклатуры */
-.item-details {
-    margin-left: 25px; /* Отступ для выравнивания с чекбоксом */
-    font-size: 0.9em;
-    color: #555;
-}
-
-.description {
-    font-style: italic;
-    margin-bottom: 5px;
-}
-
-.allergens {
-    color: #d9534f; /* Красный цвет для аллергенов */
-    font-weight: bold;
+    width: 100%;
 }
