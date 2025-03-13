@@ -90,7 +90,8 @@
     <!-- Submit Button -->
     <button type="submit">Submit Order</button>
 </form>
-
+<!-- Подключение данных -->
+<script src="data.js"></script>
 <!-- Flatpickr JS -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
@@ -176,36 +177,42 @@
         }
     };
 
-    // Функция для отображения подгрупп и номенклатур
-    function showItems(package) {
-        const itemsContainer = document.getElementById('package-items');
-        itemsContainer.innerHTML = ''; // Очищаем контейнер
+   // Функция для отображения подгрупп и номенклатур
+function showItems(package) {
+    const itemsContainer = document.getElementById('package-items');
+    itemsContainer.innerHTML = ''; // Очищаем контейнер
 
-        if (package && packages[package]) {
-            const packageData = packages[package];
+    if (package && packages[package]) {
+        const packageData = packages[package];
 
-            packageData.subgroups.forEach((subgroup, index) => {
-                const subgroupDiv = document.createElement('div');
-                subgroupDiv.className = 'subgroup';
-                subgroupDiv.innerHTML = `<h3>${subgroup.name}</h3>`;
+        packageData.subgroups.forEach((subgroup, index) => {
+            const subgroupDiv = document.createElement('div');
+            subgroupDiv.className = 'subgroup';
+            subgroupDiv.innerHTML = `<h3>${subgroup.name}</h3>`;
 
-                subgroup.items.forEach((item, itemIndex) => {
-                    const itemDiv = document.createElement('div');
-                    itemDiv.innerHTML = `
-                        <input type="checkbox" id="${package}-${index}-${itemIndex}" name="${package}-items" value="${item}">
-                        <label for="${package}-${index}-${itemIndex}">${item}</label>
-                    `;
-                    subgroupDiv.appendChild(itemDiv);
-                });
-
-                itemsContainer.appendChild(subgroupDiv);
+            subgroup.items.forEach((item, itemIndex) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.innerHTML = `
+                    <input type="checkbox" id="${package}-${index}-${itemIndex}" name="${package}-items" value="${item.name}">
+                    <label for="${package}-${index}-${itemIndex}">
+                        ${item.name}
+                        <div class="item-details">
+                            <div class="description">${item.description}</div>
+                            <div class="allergens">Allergens: ${item.allergens.join(', ') || 'None'}</div>
+                        </div>
+                    </label>
+                `;
+                subgroupDiv.appendChild(itemDiv);
             });
 
-            itemsContainer.classList.remove('hidden');
-        } else {
-            itemsContainer.classList.add('hidden');
-        }
+            itemsContainer.appendChild(subgroupDiv);
+        });
+
+        itemsContainer.classList.remove('hidden');
+    } else {
+        itemsContainer.classList.add('hidden');
     }
+}
 
     // Функция для расчета общей стоимости
     function calculateTotalAmount() {
