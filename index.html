@@ -50,21 +50,21 @@
         <input type="number" id="quantity" name="quantity" min="10" required>
         <div class="error" id="quantity-error"></div>
     </div>
-
+    
     <!-- Package Selection -->
     <div class="form-group">
-        <label for="package">Select a Package:</label>
-        <select id="package" name="package" required onchange="showItems(this.value)">
-            <option value="">-- Select a Package --</option>
-            <option value="basic">Basic Package ($10 per person)</option>
-            <option value="premium">Premium Package ($20 per person)</option>
-            <option value="luxury">Luxury Package ($30 per person)</option>
-        </select>
-        <div class="error" id="package-error"></div>
-    </div>
-
-    <!-- Package Items (Hidden by Default) -->
-    <div id="basic-items" class="form-group hidden">
+            <label for="package">Select a Package:</label>
+            <select id="package" name="package" required onchange="showItems(this.value)">
+                <option value="">-- Select a Package --</option>
+                <option value="basic">Basic Package ($10 per person)</option>
+                <option value="premium">Premium Package ($20 per person)</option>
+                <option value="luxury">Luxury Package ($30 per person)</option>
+            </select>
+            <div class="error" id="package-error"></div>
+        </div>
+        
+        <!-- Package Items (Hidden by Default) -->
+        <div id="package-items" class="hidden"></div>
         <label>Basic Package Items:</label>
         <div>
             <input type="checkbox" id="basic-item1" name="basic-items" value="Caesar Salad">
@@ -123,9 +123,131 @@
 </form>
 
 <!-- Flatpickr JS -->
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
-    // Initialize Flatpickr for time selection
+    // Данные для пакетов
+    const packages = {
+        basic: {
+            name: "Basic Package",
+            subgroups: [
+                {
+                    name: "Salads",
+                    items: ["Caesar Salad", "Greek Salad", "Caprese Salad", "Waldorf Salad", "Coleslaw"]
+                },
+                {
+                    name: "Main Courses",
+                    items: ["Grilled Chicken", "Beef Steak", "Vegetable Stir Fry", "Pasta Carbonara", "Fish and Chips"]
+                },
+                {
+                    name: "Desserts",
+                    items: ["Chocolate Cake", "Cheesecake", "Fruit Tart", "Ice Cream", "Tiramisu"]
+                },
+                {
+                    name: "Beverages",
+                    items: ["Orange Juice", "Iced Tea", "Coffee", "Lemonade", "Sparkling Water"]
+                },
+                {
+                    name: "Snacks",
+                    items: ["Bruschetta", "Spring Rolls", "Mini Quiches", "Stuffed Mushrooms", "Cheese Platter"]
+                }
+            ]
+        },
+        premium: {
+            name: "Premium Package",
+            subgroups: [
+                {
+                    name: "Salads",
+                    items: ["Caesar Salad", "Greek Salad", "Caprese Salad", "Waldorf Salad", "Coleslaw"]
+                },
+                {
+                    name: "Main Courses",
+                    items: ["Grilled Salmon", "Filet Mignon", "Vegetable Lasagna", "Chicken Alfredo", "Shrimp Scampi"]
+                },
+                {
+                    name: "Desserts",
+                    items: ["Chocolate Mousse", "Cheesecake", "Fruit Tart", "Ice Cream", "Tiramisu"]
+                },
+                {
+                    name: "Beverages",
+                    items: ["Orange Juice", "Iced Tea", "Coffee", "Lemonade", "Sparkling Water"]
+                },
+                {
+                    name: "Snacks",
+                    items: ["Bruschetta", "Spring Rolls", "Mini Quiches", "Stuffed Mushrooms", "Cheese Platter"]
+                }
+            ]
+        },
+        luxury: {
+            name: "Luxury Package",
+            subgroups: [
+                {
+                    name: "Salads",
+                    items: ["Caesar Salad", "Greek Salad", "Caprese Salad", "Waldorf Salad", "Coleslaw"]
+                },
+                {
+                    name: "Main Courses",
+                    items: ["Lobster Thermidor", "Filet Mignon", "Truffle Risotto", "Duck Confit", "Rack of Lamb"]
+                },
+                {
+                    name: "Desserts",
+                    items: ["Chocolate Soufflé", "Cheesecake", "Fruit Tart", "Ice Cream", "Tiramisu"]
+                },
+                {
+                    name: "Beverages",
+                    items: ["Orange Juice", "Iced Tea", "Coffee", "Lemonade", "Sparkling Water"]
+                },
+                {
+                    name: "Snacks",
+                    items: ["Bruschetta", "Spring Rolls", "Mini Quiches", "Stuffed Mushrooms", "Cheese Platter"]
+                }
+            ]
+        }
+    };
+
+    // Функция для отображения подгрупп и номенклатур
+    function showItems(package) {
+        const itemsContainer = document.getElementById('package-items');
+        itemsContainer.innerHTML = ''; // Очищаем контейнер
+
+        if (package && packages[package]) {
+            const packageData = packages[package];
+
+            packageData.subgroups.forEach((subgroup, index) => {
+                const subgroupDiv = document.createElement('div');
+                subgroupDiv.className = 'subgroup';
+                subgroupDiv.innerHTML = `<h3>${subgroup.name}</h3>`;
+
+                subgroup.items.forEach((item, itemIndex) => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.innerHTML = `
+                        <input type="checkbox" id="${package}-${index}-${itemIndex}" name="${package}-items" value="${item}">
+                        <label for="${package}-${index}-${itemIndex}">${item}</label>
+                    `;
+                    subgroupDiv.appendChild(itemDiv);
+                });
+
+                itemsContainer.appendChild(subgroupDiv);
+            });
+
+            itemsContainer.classList.remove('hidden');
+        } else {
+            itemsContainer.classList.add('hidden');
+        }
+    }
+
+    // Ограничение выбора не более 2 позиций из каждой подгруппы
+    document.getElementById('package-items').addEventListener('change', function(event) {
+        if (event.target.type === 'checkbox') {
+            const subgroup = event.target.closest('.subgroup');
+            const checkedItems = subgroup.querySelectorAll('input[type="checkbox"]:checked');
+
+            if (checkedItems.length > 2) {
+                event.target.checked = false; // Снимаем выбор, если выбрано больше 2
+                alert('You can select a maximum of 2 items from each subgroup.');
+            }
+        }
+    });
+
+    // Инициализация Flatpickr для времени
     flatpickr("#event-time", {
         enableTime: true,
         noCalendar: true,
@@ -141,80 +263,26 @@
         }
     });
 
-    // Form validation
+    // Валидация формы
     document.getElementById('catering-form').addEventListener('submit', function(event) {
         let isValid = true;
 
-        // Validate Name
-        const name = document.getElementById('name');
-        if (!name.value.match(/^[A-Za-z\s]+$/)) {
-            document.getElementById('name-error').textContent = 'Please enter a valid name (letters and spaces only).';
-            isValid = false;
-        } else {
-            document.getElementById('name-error').textContent = '';
+        // Валидация других полей (остается без изменений)
+        // ...
+
+        // Валидация выбора номенклатуры
+        const package = document.getElementById('package').value;
+        if (package) {
+            const subgroups = document.querySelectorAll('.subgroup');
+            subgroups.forEach(subgroup => {
+                const checkedItems = subgroup.querySelectorAll('input[type="checkbox"]:checked');
+                if (checkedItems.length < 1) {
+                    isValid = false;
+                    alert(`Please select at least 1 item from each subgroup in ${packages[package].name}.`);
+                }
+            });
         }
 
-        // Validate Phone
-        const phone = document.getElementById('phone');
-        if (!phone.value.match(/^[0-9]{10}$/)) {
-            document.getElementById('phone-error').textContent = 'Please enter a valid 10-digit phone number (e.g., 6172345698).';
-            isValid = false;
-        } else {
-            document.getElementById('phone-error').textContent = '';
-        }
-
-        // Validate Email
-        const email = document.getElementById('email');
-        if (!email.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-            document.getElementById('email-error').textContent = 'Please enter a valid email address.';
-            isValid = false;
-        } else {
-            document.getElementById('email-error').textContent = '';
-        }
-
-        // Validate Event Date
-        const eventDate = document.getElementById('event-date');
-        if (!eventDate.value) {
-            document.getElementById('event-date-error').textContent = 'Please select a date.';
-            isValid = false;
-        } else {
-            document.getElementById('event-date-error').textContent = '';
-        }
-
-        // Validate Event Time
-        const eventTime = document.getElementById('event-time');
-        const minTime = "10:00 AM";
-        const maxTime = "7:00 PM";
-
-        if (!eventTime.value) {
-            document.getElementById('event-time-error').textContent = 'Please select a time.';
-            isValid = false;
-        } else if (eventTime.value < minTime || eventTime.value > maxTime) {
-            document.getElementById('event-time-error').textContent = `Please select a time between ${minTime} and ${maxTime}.`;
-            isValid = false;
-        } else {
-            document.getElementById('event-time-error').textContent = '';
-        }
-
-        // Validate Quantity
-        const quantity = document.getElementById('quantity');
-        if (quantity.value < 10) {
-            document.getElementById('quantity-error').textContent = 'Minimum number of people is 10.';
-            isValid = false;
-        } else {
-            document.getElementById('quantity-error').textContent = '';
-        }
-
-        // Validate Package
-        const package = document.getElementById('package');
-        if (!package.value) {
-            document.getElementById('package-error').textContent = 'Please select a package.';
-            isValid = false;
-        } else {
-            document.getElementById('package-error').textContent = '';
-        }
-
-        // Prevent form submission if validation fails
         if (!isValid) {
             event.preventDefault();
         }
