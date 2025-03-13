@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anoushella Catering Order Form</title>
+    <title>Catering Order Form</title>
     <link rel="stylesheet" href="style.css">
     <!-- Flatpickr CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
 
-<h1>Anoushella Catering Order Form</h1>
+<h1>Catering Order Form</h1>
 <form id="catering-form" action="/submit-order" method="POST">
     <!-- Contact Information -->
     <div class="form-group">
@@ -217,7 +217,7 @@
     document.getElementById('package-items').addEventListener('change', function(event) {
         if (event.target.type === 'checkbox') {
             const subgroup = event.target.closest('.subgroup');
-            const limit = parseInt(subgroup.querySelector('.subgroup-limit').textContent.match(/\d+/)[0];
+            const limit = parseInt(subgroup.querySelector('.subgroup-limit').textContent.match(/\d+/)[0]);
             const checkedItems = subgroup.querySelectorAll('input[type="checkbox"]:checked');
 
             if (checkedItems.length > limit) {
