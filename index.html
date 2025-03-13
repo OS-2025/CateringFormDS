@@ -108,14 +108,18 @@
             packageData.subgroups.forEach((subgroup, index) => {
                 const subgroupDiv = document.createElement('div');
                 subgroupDiv.className = 'subgroup';
-                subgroupDiv.innerHTML = `<h3>${subgroup.name}</h3>`;
+                subgroupDiv.innerHTML = `
+                    <h3>${subgroup.name}</h3>
+                    <div class="subgroup-limit">Choose no more than ${subgroup.limit} items</div>
+                `;
 
                 subgroup.items.forEach((item, itemIndex) => {
                     const itemDiv = document.createElement('div');
+                    itemDiv.className = 'item';
                     itemDiv.innerHTML = `
                         <input type="checkbox" id="${package}-${index}-${itemIndex}" name="${package}-items" value="${item.name}">
                         <label for="${package}-${index}-${itemIndex}">
-                            ${item.name}
+                            <div class="item-name">${item.name}</div>
                             <div class="item-details">
                                 <div class="description">${item.description}</div>
                                 <div class="allergens">Allergens: ${item.allergens.join(', ') || 'None'}</div>
@@ -206,6 +210,20 @@
 
         if (!isValid) {
             event.preventDefault();
+        }
+    });
+
+    // Ограничение выбора чекбоксов в подгруппах
+    document.getElementById('package-items').addEventListener('change', function(event) {
+        if (event.target.type === 'checkbox') {
+            const subgroup = event.target.closest('.subgroup');
+            const limit = parseInt(subgroup.querySelector('.subgroup-limit').textContent.match(/\d+/)[0];
+            const checkedItems = subgroup.querySelectorAll('input[type="checkbox"]:checked');
+
+            if (checkedItems.length > limit) {
+                event.target.checked = false; // Снимаем выбор, если превышен лимит
+                alert(`You can select a maximum of ${limit} items from this subgroup.`);
+            }
         }
     });
 </script>
