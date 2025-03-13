@@ -50,8 +50,7 @@ textarea {
 
 /* Стили для кнопки отправки */
 button {
-    width: 100%;
-    padding: 12px;
+    padding: 12px 20px;
     background-color: #28a745;
     color: white;
     border: none;
@@ -59,6 +58,7 @@ button {
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s ease;
+    margin-right: 10px;
 }
 
 button:hover {
@@ -136,47 +136,36 @@ button:hover {
     display: none;
 }
 
-/* Стили для заголовка формы */
-h1 {
-    text-align: center;
+/* Стили для печатной формы */
+#printable-form {
+    display: none; /* Скрываем по умолчанию */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    margin-top: 20px;
+}
+
+.print-section {
     margin-bottom: 20px;
+}
+
+.print-row {
+    margin-bottom: 15px;
+}
+
+.print-row strong {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1.1em;
     color: #333;
 }
 
-/* Стили для ширины полей */
-#name {
-    width: 300px;
+.print-row div {
+    margin-left: 20px;
 }
 
-#phone {
-    width: 200px;
-}
-
-#email {
-    width: 300px;
-    height: 40px;
-}
-
-#event-date {
-    width: 200px;
-}
-
-#event-time {
-    width: 200px;
-}
-
-#quantity {
-    width: 100px;
-}
-
-#package {
-    width: 300px;
-}
-
-#package-type {
-    width: 300px;
-}
-
-#comments {
-    width: 100%;
+/* Показываем печатную форму при нажатии на кнопку */
+#printable-form.visible {
+    display: block;
 }
