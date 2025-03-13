@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catering Order Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="tel"], input[type="number"], input[type="date"], input[type="time"], select, textarea {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .hidden {
+            display: none;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Catering Order Form</h1>
+<form id="catering-form" action="/submit-order" method="POST">
+    <!-- Contact Information -->
+    <div class="form-group">
+        <label for="name">Your Name:</label>
+        <input type="text" id="name" name="name" required pattern="[A-Za-z\s]+" title="Please enter a valid name (letters and spaces only)">
+        <div class="error" id="name-error"></div>
+    </div>
+
+    <div class="form-group">
+        <label for="phone">Your Phone:</label>
+        <input type="tel" id="phone" name="phone" required pattern="[0-9]{3} [0-9]{7}" title="Please enter a valid phone number (e.g., 617 2345698)">
+        <div class="error" id="phone-error"></div>
+    </div>
+
+    <div class="form-group">
+        <label for="email">Your Email:</label>
+        <input type="email" id="email" name="email" required>
+        <div class="error" id="email-error"></div>
+    </div>
+
+    <!-- Event Date and Time -->
+    <div class="form-group">
+        <label for="event-date">Event Date:</label>
+        <input type="date" id="event-date" name="event-date" required>
+        <div class="error" id="event-date-error"></div>
+    </div>
+
+    <div class="form-group">
+        <label for="event-time">Event Time:</label>
+        <input type="time" id="event-time" name="event-time" required step="900" title="Please select time in 15-minute intervals">
+        <div class="error" id="event-time-error"></div>
+    </div>
+
+    <!-- Number of People -->
+    <div class="form-group">
+        <label for="quantity">Number of People (min 10):</label>
+        <input type="number" id="quantity" name="quantity" min="10" required>
+        <div class="error" id="quantity-error"></div>
+    </div>
+
+    <!-- Package Selection -->
+    <div class="form-group">
+        <label for="package">Select a Package:</label>
+        <select id="package" name="package" required onchange="showItems(this.value)">
+            <option value="">-- Select a Package --</option>
+            <option value="basic">Basic Package ($10 per person)</option>
+            <option value="premium">Premium Package ($20 per person)</option>
+            <option value="luxury">Luxury Package ($30 per person)</option>
+        </select>
+        <div class="error" id="package-error"></div>
+    </div>
+
+    <!-- Package Items (Hidden by Default) -->
+    <div id="basic-items" class="form-group hidden">
+        <label>Basic Package Items:</label>
+        <div>
+            <input type="checkbox" id="basic-item1" name="basic-items" value="Caesar Salad">
+            <label for="basic-item1">Caesar Salad</label>
+        </div>
+        <div>
+            <input type="checkbox" id="basic-item2" name="basic-items" value="Pasta Carbonara">
+            <label for="basic-item2">Pasta Carbonara</label>
+        </div>
+        <div>
+            <input type="checkbox" id="basic-item3" name="basic-items" value="Fruit Plate">
+            <label for="basic-item3">Fruit Plate</label>
+        </div>
+    </div>
+
+    <div id="premium-items" class="form-group hidden">
+        <label>Premium Package Items:</label>
+        <div>
+            <input type="checkbox" id="premium-item1" name="premium-items" value="Grilled Salmon">
+            <label for="premium-item1">Grilled Salmon</label>
+        </div>
+        <div>
+            <input type="checkbox" id="premium-item2" name="premium-items" value="Beef Steak">
+            <label for="premium-item2">Beef Steak</label>
+        </div>
+        <div>
+            <input type="checkbox" id="premium-item3" name="premium-items" value="Vegetable Medley">
+            <label for="premium-item3">Vegetable Medley</label>
+        </div>
+    </div>
+
+    <div id="luxury-items" class="form-group hidden">
+        <label>Luxury Package Items:</label>
+        <div>
+            <input type="checkbox" id="luxury-item1" name="luxury-items" value="Lobster Thermidor">
+            <label for="luxury-item1">Lobster Thermidor</label>
+        </div>
+        <div>
+            <input type="checkbox" id="luxury-item2" name="luxury-items" value="Truffle Risotto">
+            <label for="luxury-item2">Truffle Risotto</label>
+        </div>
+        <div>
+            <input type="checkbox" id="luxury-item3" name="luxury-items" value="Chocolate Fondue">
+            <label for="luxury-item3">Chocolate Fondue</label>
+        </div>
+    </div>
+
+    <!-- Additional Comments -->
+    <div class="form-group">
+        <label for="comments">Additional Comments:</label>
+        <textarea id="comments" name="comments" rows="4"></textarea>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit">Submit Order</button>
+</form>
+
+<script>
+    function showItems(package) {
+        // Hide all item sections
+        document.getElementById('basic-items').classList.add('hidden');
+        document.getElementById('premium-items').classList.add('hidden');
+        document.getElementById('luxury-items').classList.add('hidden');
+
+        // Show the selected package's items
+        if (package === 'basic') {
+            document.getElementById('basic-items').classList.remove('hidden');
+        } else if (package === 'premium') {
+            document.getElementById('premium-items').classList.remove('hidden');
+        } else if (package === 'luxury') {
+            document.getElementById('luxury-items').classList.remove('hidden');
+        }
+    }
+
+    // Form validation
+    document.getElementById('catering-form').addEventListener('submit', function(event) {
+        let isValid = true;
+
+        // Validate Name
+        const name = document.getElementById('name');
+        if (!name.value.match(/^[A-Za-z\s]+$/)) {
+            document.getElementById('name-error').textContent = 'Please enter a valid name (letters and spaces only).';
+            isValid = false;
+        } else {
+            document.getElementById('name-error').textContent = '';
+        }
+
+        // Validate Phone
+        const phone = document.getElementById('phone');
+        if (!phone.value.match(/^[0-9]{3} [0-9]{7}$/)) {
+            document.getElementById('phone-error').textContent = 'Please enter a valid phone number (e.g., 617 2345698).';
+            isValid = false;
+        } else {
+            document.getElementById('phone-error').textContent = '';
+        }
+
+        // Validate Email
+        const email = document.getElementById('email');
+        if (!email.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+            document.getElementById('email-error').textContent = 'Please enter a valid email address.';
+            isValid = false;
+        } else {
+            document.getElementById('email-error').textContent = '';
+        }
+
+        // Validate Event Date
+        const eventDate = document.getElementById('event-date');
+        if (!eventDate.value) {
+            document.getElementById('event-date-error').textContent = 'Please select a date.';
+            isValid = false;
+        } else {
+            document.getElementById('event-date-error').textContent = '';
+        }
+
+        // Validate Event Time
+        const eventTime = document.getElementById('event-time');
+        if (!eventTime.value) {
+            document.getElementById('event-time-error').textContent = 'Please select a time.';
+            isValid = false;
+        } else {
+            document.getElementById('event-time-error').textContent = '';
+        }
+
+        // Validate Quantity
+        const quantity = document.getElementById('quantity');
+        if (quantity.value < 10) {
+            document.getElementById('quantity-error').textContent = 'Minimum number of people is 10.';
+            isValid = false;
+        } else {
+            document.getElementById('quantity-error').textContent = '';
+        }
+
+        // Validate Package
+        const package = document.getElementById('package');
+        if (!package.value) {
+            document.getElementById('package-error').textContent = 'Please select a package.';
+            isValid = false;
+        } else {
+            document.getElementById('package-error').textContent = '';
+        }
+
+        // Prevent form submission if validation fails
+        if (!isValid) {
+            event.preventDefault();
+        }
+    });
+</script>
+
+</body>
+</html>
