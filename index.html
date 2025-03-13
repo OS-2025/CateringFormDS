@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anoushella Catering Order Form</title>
+    <title>Catering Order Form</title>
     <link rel="stylesheet" href="style.css">
     <!-- Flatpickr CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
 
-<h1>Anoushella Catering Order Form</h1>
+<h1>Catering Order Form</h1>
 <form id="catering-form" action="/submit-order" method="POST">
     <!-- Contact Information -->
     <div class="form-group">
@@ -90,129 +90,49 @@
     <!-- Submit Button -->
     <button type="submit">Submit Order</button>
 </form>
+
 <!-- Подключение данных -->
 <script src="data.js"></script>
+
 <!-- Flatpickr JS -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
-    // Данные для пакетов
-    const packages = {
-        basic: {
-            name: "Basic Package",
-            price: 10,
-            subgroups: [
-                {
-                    name: "Salads",
-                    items: ["Caesar Salad", "Greek Salad", "Caprese Salad", "Waldorf Salad", "Coleslaw"]
-                },
-                {
-                    name: "Main Courses",
-                    items: ["Grilled Chicken", "Beef Steak", "Vegetable Stir Fry", "Pasta Carbonara", "Fish and Chips"]
-                },
-                {
-                    name: "Desserts",
-                    items: ["Chocolate Cake", "Cheesecake", "Fruit Tart", "Ice Cream", "Tiramisu"]
-                },
-                {
-                    name: "Beverages",
-                    items: ["Orange Juice", "Iced Tea", "Coffee", "Lemonade", "Sparkling Water"]
-                },
-                {
-                    name: "Snacks",
-                    items: ["Bruschetta", "Spring Rolls", "Mini Quiches", "Stuffed Mushrooms", "Cheese Platter"]
-                }
-            ]
-        },
-        premium: {
-            name: "Premium Package",
-            price: 20,
-            subgroups: [
-                {
-                    name: "Salads",
-                    items: ["Caesar Salad", "Greek Salad", "Caprese Salad", "Waldorf Salad", "Coleslaw"]
-                },
-                {
-                    name: "Main Courses",
-                    items: ["Grilled Salmon", "Filet Mignon", "Vegetable Lasagna", "Chicken Alfredo", "Shrimp Scampi"]
-                },
-                {
-                    name: "Desserts",
-                    items: ["Chocolate Mousse", "Cheesecake", "Fruit Tart", "Ice Cream", "Tiramisu"]
-                },
-                {
-                    name: "Beverages",
-                    items: ["Orange Juice", "Iced Tea", "Coffee", "Lemonade", "Sparkling Water"]
-                },
-                {
-                    name: "Snacks",
-                    items: ["Bruschetta", "Spring Rolls", "Mini Quiches", "Stuffed Mushrooms", "Cheese Platter"]
-                }
-            ]
-        },
-        luxury: {
-            name: "Luxury Package",
-            price: 30,
-            subgroups: [
-                {
-                    name: "Salads",
-                    items: ["Caesar Salad", "Greek Salad", "Caprese Salad", "Waldorf Salad", "Coleslaw"]
-                },
-                {
-                    name: "Main Courses",
-                    items: ["Lobster Thermidor", "Filet Mignon", "Truffle Risotto", "Duck Confit", "Rack of Lamb"]
-                },
-                {
-                    name: "Desserts",
-                    items: ["Chocolate Soufflé", "Cheesecake", "Fruit Tart", "Ice Cream", "Tiramisu"]
-                },
-                {
-                    name: "Beverages",
-                    items: ["Orange Juice", "Iced Tea", "Coffee", "Lemonade", "Sparkling Water"]
-                },
-                {
-                    name: "Snacks",
-                    items: ["Bruschetta", "Spring Rolls", "Mini Quiches", "Stuffed Mushrooms", "Cheese Platter"]
-                }
-            ]
-        }
-    };
+    // Функция для отображения подгрупп и номенклатур
+    function showItems(package) {
+        const itemsContainer = document.getElementById('package-items');
+        itemsContainer.innerHTML = ''; // Очищаем контейнер
 
-   // Функция для отображения подгрупп и номенклатур
-function showItems(package) {
-    const itemsContainer = document.getElementById('package-items');
-    itemsContainer.innerHTML = ''; // Очищаем контейнер
+        if (package && packages[package]) {
+            const packageData = packages[package];
 
-    if (package && packages[package]) {
-        const packageData = packages[package];
+            packageData.subgroups.forEach((subgroup, index) => {
+                const subgroupDiv = document.createElement('div');
+                subgroupDiv.className = 'subgroup';
+                subgroupDiv.innerHTML = `<h3>${subgroup.name}</h3>`;
 
-        packageData.subgroups.forEach((subgroup, index) => {
-            const subgroupDiv = document.createElement('div');
-            subgroupDiv.className = 'subgroup';
-            subgroupDiv.innerHTML = `<h3>${subgroup.name}</h3>`;
+                subgroup.items.forEach((item, itemIndex) => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.innerHTML = `
+                        <input type="checkbox" id="${package}-${index}-${itemIndex}" name="${package}-items" value="${item.name}">
+                        <label for="${package}-${index}-${itemIndex}">
+                            ${item.name}
+                            <div class="item-details">
+                                <div class="description">${item.description}</div>
+                                <div class="allergens">Allergens: ${item.allergens.join(', ') || 'None'}</div>
+                            </div>
+                        </label>
+                    `;
+                    subgroupDiv.appendChild(itemDiv);
+                });
 
-            subgroup.items.forEach((item, itemIndex) => {
-                const itemDiv = document.createElement('div');
-                itemDiv.innerHTML = `
-                    <input type="checkbox" id="${package}-${index}-${itemIndex}" name="${package}-items" value="${item.name}">
-                    <label for="${package}-${index}-${itemIndex}">
-                        ${item.name}
-                        <div class="item-details">
-                            <div class="description">${item.description}</div>
-                            <div class="allergens">Allergens: ${item.allergens.join(', ') || 'None'}</div>
-                        </div>
-                    </label>
-                `;
-                subgroupDiv.appendChild(itemDiv);
+                itemsContainer.appendChild(subgroupDiv);
             });
 
-            itemsContainer.appendChild(subgroupDiv);
-        });
-
-        itemsContainer.classList.remove('hidden');
-    } else {
-        itemsContainer.classList.add('hidden');
+            itemsContainer.classList.remove('hidden');
+        } else {
+            itemsContainer.classList.add('hidden');
+        }
     }
-}
 
     // Функция для расчета общей стоимости
     function calculateTotalAmount() {
