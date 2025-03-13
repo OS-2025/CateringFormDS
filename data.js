@@ -8,7 +8,7 @@ const packages = {
                 limit: 2, // Лимит выбора для этой подгруппы
                 items: [
                     {
-                        name: "Caesar Salad",
+                        name: "Pork",
                         description: "Romaine lettuce, croutons, parmesan cheese, Caesar dressing.",
                         allergens: ["dairy", "gluten"]
                     },
