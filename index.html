@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catering Order Form</title>
-    <link rel="stylesheet" href="style.css"> <!-- Подключение CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
 
@@ -37,8 +39,8 @@
     </div>
 
     <div class="form-group">
-        <label for="event-time">Event Time:</label>
-        <input type="time" id="event-time" name="event-time" required step="900" title="Please select time in 15-minute intervals">
+        <label for="event-time">Event Time (10:00 AM - 7:00 PM, 30-minute intervals):</label>
+        <input type="text" id="event-time" name="event-time" placeholder="Select time" required>
         <div class="error" id="event-time-error"></div>
     </div>
 
@@ -54,9 +56,9 @@
         <label for="package">Select a Package:</label>
         <select id="package" name="package" required onchange="showItems(this.value)">
             <option value="">-- Select a Package --</option>
-            <option value="basic">Basic Package ($13.50 per person)</option>
-            <option value="premium">Premium Package ($15 per person)</option>
-            <option value="luxury">Luxury Package ($18 per person)</option>
+            <option value="basic">Basic Package ($10 per person)</option>
+            <option value="premium">Premium Package ($20 per person)</option>
+            <option value="luxury">Luxury Package ($30 per person)</option>
         </select>
         <div class="error" id="package-error"></div>
     </div>
@@ -65,8 +67,8 @@
     <div id="basic-items" class="form-group hidden">
         <label>Basic Package Items:</label>
         <div>
-            <input type="checkbox" id="basic-item1" name="basic-items" value="Hummus">
-            <label for="basic-item1">Hummus</label>
+            <input type="checkbox" id="basic-item1" name="basic-items" value="Caesar Salad">
+            <label for="basic-item1">Caesar Salad</label>
         </div>
         <div>
             <input type="checkbox" id="basic-item2" name="basic-items" value="Pasta Carbonara">
@@ -120,22 +122,24 @@
     <button type="submit">Submit Order</button>
 </form>
 
+<!-- Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
-    function showItems(package) {
-        // Hide all item sections
-        document.getElementById('basic-items').classList.add('hidden');
-        document.getElementById('premium-items').classList.add('hidden');
-        document.getElementById('luxury-items').classList.add('hidden');
-
-        // Show the selected package's items
-        if (package === 'basic') {
-            document.getElementById('basic-items').classList.remove('hidden');
-        } else if (package === 'premium') {
-            document.getElementById('premium-items').classList.remove('hidden');
-        } else if (package === 'luxury') {
-            document.getElementById('luxury-items').classList.remove('hidden');
+    // Initialize Flatpickr for time selection
+    flatpickr("#event-time", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "h:i K",
+        time_24hr: false,
+        minuteIncrement: 30,
+        minTime: "10:00 AM",
+        maxTime: "7:00 PM",
+        defaultHour: 10,
+        defaultMinute: 0,
+        onReady: function(selectedDates, dateStr, instance) {
+            instance.setDate("10:00 AM");
         }
-    }
+    });
 
     // Form validation
     document.getElementById('catering-form').addEventListener('submit', function(event) {
@@ -179,8 +183,14 @@
 
         // Validate Event Time
         const eventTime = document.getElementById('event-time');
+        const minTime = "10:00 AM";
+        const maxTime = "7:00 PM";
+
         if (!eventTime.value) {
             document.getElementById('event-time-error').textContent = 'Please select a time.';
+            isValid = false;
+        } else if (eventTime.value < minTime || eventTime.value > maxTime) {
+            document.getElementById('event-time-error').textContent = `Please select a time between ${minTime} and ${maxTime}.`;
             isValid = false;
         } else {
             document.getElementById('event-time-error').textContent = '';
