@@ -180,3 +180,19 @@ h1 {
     color: #555;
     margin: 0; /* Убираем отступы у label */
 }
+/* Стили для деталей номенклатуры */
+.item-details {
+    margin-left: 25px; /* Отступ для выравнивания с чекбоксом */
+    font-size: 0.9em;
+    color: #555;
+}
+
+.description {
+    font-style: italic;
+    margin-bottom: 5px;
+}
+
+.allergens {
+    color: #d9534f; /* Красный цвет для аллергенов */
+    font-weight: bold;
+}
