@@ -122,19 +122,19 @@ h1 {
 }
 
 #phone {
-    width: 200px; /* Ширина поля телефона */
+    width: 150px; /* Ширина поля телефона */
 }
 
 #email {
-    width: 300px; /* Ширина поля email */
+    width: 250px; /* Ширина поля email */
 }
 
 #event-date {
-    width: 200px; /* Ширина поля даты */
+    width: 180px; /* Ширина поля даты */
 }
 
 #event-time {
-    width: 200px; /* Ширина поля времени */
+    width: 150px; /* Ширина поля времени */
 }
 
 #quantity {
