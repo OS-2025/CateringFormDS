@@ -191,44 +191,59 @@
     document.getElementById('package').addEventListener('change', calculateTotalAmount);
     document.getElementById('package-type').addEventListener('change', calculateTotalAmount);
 
-    // Инициализация Flatpickr для времени
-    flatpickr("#event-time", {
-        enableTime: true,
-        noCalendar: true,
-        dateFormat: "h:i K",
-        time_24hr: false,
-        minuteIncrement: 30,
-        minTime: "10:00 AM",
-        maxTime: "7:00 PM",
-        defaultHour: 10,
-        defaultMinute: 0,
-        onReady: function(selectedDates, dateStr, instance) {
-            instance.setDate("10:00 AM");
-        },
-        onChange: function(selectedDates, dateStr, instance) {
-            // Проверка минут при изменении времени
-            const minutes = selectedDates[0].getMinutes();
-            if (minutes !== 0 && minutes !== 30) {
-                // Устанавливаем минуты на 00, если выбрано не 00 или 30
-                selectedDates[0].setMinutes(0);
-                instance.setDate(selectedDates[0]);
-            }
+// Инициализация Flatpickr для времени
+flatpickr("#event-time", {
+    enableTime: true,
+    noCalendar: true,
+    dateFormat: "h:i K",
+    time_24hr: false,
+    minuteIncrement: 30,
+    minTime: "10:00 AM",
+    maxTime: "7:00 PM",
+    defaultHour: 10,
+    defaultMinute: 0,
+    onReady: function(selectedDates, dateStr, instance) {
+        instance.setDate("10:00 AM");
+    },
+    onChange: function(selectedDates, dateStr, instance) {
+        // Проверка минут при изменении времени
+        const minutes = selectedDates[0].getMinutes();
+        if (minutes !== 0 && minutes !== 30) {
+            // Устанавливаем минуты на 00, если выбрано не 00 или 30
+            selectedDates[0].setMinutes(0);
+            instance.setDate(selectedDates[0]);
         }
-    });
+    }
+});
 
-    // Проверка минут при вводе вручную
-    document.getElementById('event-time').addEventListener('input', function(event) {
-        const timeValue = event.target.value;
-        const timeParts = timeValue.split(':');
-        if (timeParts.length === 2) {
-            const minutes = parseInt(timeParts[1]);
-            if (minutes !== 0 && minutes !== 30) {
-                // Устанавливаем минуты на 00, если введено не 00 или 30
-                timeParts[1] = '00';
-                event.target.value = timeParts.join(':');
-            }
+// Проверка времени при вводе вручную
+document.getElementById('event-time').addEventListener('blur', function() {
+    const timeValue = this.value;
+    const timeParts = timeValue.split(':');
+    if (timeParts.length === 2) {
+        const hours = parseInt(timeParts[0]);
+        const minutes = parseInt(timeParts[1].replace(/\D/g, '')); // Убираем AM/PM
+        const period = timeValue.includes('PM') ? 'PM' : 'AM';
+
+        // Проверка диапазона времени
+        if (
+            (period === 'AM' && (hours < 10 || hours > 11)) || // До 10 AM
+            (period === 'PM' && (hours < 12 || hours > 7)) || // После 7 PM
+            (period === 'PM' && hours === 12 && minutes > 0) // 12 PM (полдень)
+        ) {
+            alert("Time must be between 10:00 AM and 7:00 PM.");
+            this.value = "10:00 AM"; // Устанавливаем значение по умолчанию
+            return;
         }
-    });
+
+        // Проверка минут
+        if (minutes !== 0 && minutes !== 30) {
+            // Устанавливаем минуты на 00, если введено не 00 или 30
+            timeParts[1] = '00';
+            this.value = `${timeParts[0]}:${timeParts[1]} ${period}`;
+        }
+    }
+});
 
     // Обработчик для кнопки "Print Form"
     document.getElementById('print-button').addEventListener('click', function() {
