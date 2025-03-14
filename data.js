@@ -17,15 +17,29 @@ const packages = {
                         description: "Tomatoes, cucumbers, red onion, feta cheese, olives, olive oil.",
                         allergens: ["dairy"]
                     },
-                     {
+                    {
                         name: "Hummus",
                         description: "Cheekpeas, cucumbers, olives, olive oil.",
                         allergens: ["Vegitarian"]
-                    },
-                    // Другие блюда
+                    }
                 ]
             },
-            // Другие подгруппы
+            {
+                name: "Main Courses",
+                limit: 1,
+                items: [
+                    {
+                        name: "Grilled Chicken",
+                        description: "Grilled chicken breast with herbs.",
+                        allergens: []
+                    },
+                    {
+                        name: "Beef Steak",
+                        description: "Juicy beef steak with mashed potatoes.",
+                        allergens: []
+                    }
+                ]
+            }
         ]
     },
     premium: {
