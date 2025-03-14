@@ -247,7 +247,20 @@
             return;
         }
 
-        // Заполняем печатную форму
+        // Проверка на количество людей
+        if (parseInt(quantity) < 10) {
+            alert("Minimum number of people is 10.");
+            return;
+        }
+
+        // Проверка на выбор блюд
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+        if (checkboxes.length === 0) {
+            alert("Please select at least one item from the package.");
+            return;
+        }
+
+        // Если все проверки пройдены, открываем печатную форму
         document.getElementById('print-event-date').textContent = eventDate;
         document.getElementById('print-event-time').textContent = eventTime;
         document.getElementById('print-quantity').textContent = quantity;
@@ -256,9 +269,7 @@
         document.getElementById('print-email').textContent = email;
         document.getElementById('print-phone').textContent = phone;
 
-        // Заполняем выбранные номенклатуры
         const selectedItems = [];
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
         checkboxes.forEach(checkbox => {
             const itemName = checkbox.nextElementSibling.querySelector('.item-name').textContent;
             selectedItems.push(itemName);
@@ -267,10 +278,8 @@
         const printItemsContainer = document.getElementById('print-items');
         printItemsContainer.innerHTML = selectedItems.map(item => `<div>${item}</div>`).join('');
 
-        // Показываем печатную форму
         document.getElementById('printable-form').classList.add('visible');
 
-        // Открываем печатную форму в новом окне
         const printWindow = window.open('', '', 'width=800,height=600');
         printWindow.document.write(`
             <html>
@@ -305,6 +314,47 @@
                 event.target.checked = false; // Снимаем выбор, если превышен лимит
                 alert(`You can select a maximum of ${limit} items from this subgroup.`);
             }
+        }
+    });
+
+    // Проверка всех полей при потере фокуса
+    document.getElementById('name').addEventListener('blur', function() {
+        const name = this.value;
+        const errorElement = document.getElementById('name-error');
+        if (!name.match(/^[A-Za-z\s]+$/)) {
+            errorElement.textContent = "Please enter a valid name (letters and spaces only).";
+        } else {
+            errorElement.textContent = "";
+        }
+    });
+
+    document.getElementById('phone').addEventListener('blur', function() {
+        const phone = this.value;
+        const errorElement = document.getElementById('phone-error');
+        if (!phone.match(/^[0-9]{10}$/)) {
+            errorElement.textContent = "Please enter a valid 10-digit phone number.";
+        } else {
+            errorElement.textContent = "";
+        }
+    });
+
+    document.getElementById('email').addEventListener('blur', function() {
+        const email = this.value;
+        const errorElement = document.getElementById('email-error');
+        if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+            errorElement.textContent = "Please enter a valid email address.";
+        } else {
+            errorElement.textContent = "";
+        }
+    });
+
+    document.getElementById('quantity').addEventListener('blur', function() {
+        const quantity = parseInt(this.value);
+        const errorElement = document.getElementById('quantity-error');
+        if (quantity < 10) {
+            errorElement.textContent = "Minimum number of people is 10.";
+        } else {
+            errorElement.textContent = "";
         }
     });
 </script>
