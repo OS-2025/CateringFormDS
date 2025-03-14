@@ -37,8 +37,8 @@ input[type="date"],
 input[type="time"],
 select,
 textarea {
-    width: 50%; /* Уменьшаем ширину до 50% */
-    max-width: 400px; /* Максимальная ширина */
+    width: 70%; /* Уменьшаем ширину до 70% */
+    max-width: 600px; /* Максимальная ширина */
     padding: 10px;
     box-sizing: border-box;
     margin-bottom: 10px;
