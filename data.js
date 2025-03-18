@@ -50,8 +50,8 @@ const packages = {
         ]
     },
     luxury: {
-        name: "Luxury Package",
-        price: 30,
+        name: "Executive Lunch",
+        price: 19.50,
         subgroups: [
             // Аналогично Basic Package, но с другими блюдами
         ]
